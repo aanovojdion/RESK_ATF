@@ -1,41 +1,38 @@
-Feature: Add Contact Functionality
+Feature: Add New Contact
 
   Background:
-    Given already registered user is on the Contact List page
-    And user clicks on Add a New Contact button
-#    And user on the Add Contact page
+    Given already logged-in user is on the Contact List page
 
   @AddContact @PositiveFlow
 
-  Scenario Outline: User add contact filling in only required fields
-
-    When user populate the add contact form with valid data
+  Scenario Outline: User add a new contact filling in only required fields
+    Given user clicked the Add a New Contact button
+    When user submits add a new contact form with required valid data
       | firstName   | lastName   |
       | <firstName> | <lastName> |
-    And user clicks on Submit button
     Then user is redirected to the Contact List page
     And newly added user is displayed in the table
 
     Examples:
       | firstName | lastName |
-      | John      | Li       |
+      | Ken       | Li       |
       | Ann       | Stone    |
-      | Rob       | Ken      |
+      | Mark      | Rog      |
 
-
+#
   @AddContact @NegativeFlow
 
-  Scenario Outline: User cannot add contact
+  Scenario Outline: User cannot add a new contact
 
-    When user populate the add contact form with invalid data
+    Given user clicked the Add a New Contact button
+    When user submits add a new contact form with required invalid data
       | firstName   | lastName   |
       | <firstName> | <lastName> |
-    And user click on Submit button
-    Then the contact is not displayed in the table
-    And the <warning message> is displayed
+    Then the warning message is displayed
+    And the Add Contact page is displayed
 
     Examples:
       | firstName | lastName | warning message                                                                                             |
-      |           |          | Contact validation failed: firstName: Path `firstName` is required., lastName: Path `lastName` is required. |
-      | Rob       |          | Contact validation failed: lastName: Path `lastName` is required.                                           |
-      |           | Ken      | Contact validation failed: firstName: Path `firstName` is required.                                         |
+      | <empty>   | <empty>  | Contact validation failed: firstName: Path `firstName` is required., lastName: Path `lastName` is required. |
+      | Rob       | <empty>  | Contact validation failed: lastName: Path `lastName` is required.                                           |
+      | <empty>   | Ken      | Contact validation failed: firstName: Path `firstName` is required.                                         |

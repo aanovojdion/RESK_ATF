@@ -1,4 +1,4 @@
-Feature: LogIn Functionality
+Feature: LogIn
 
   Background:
     Given user is on the Home page
@@ -9,19 +9,18 @@ Feature: LogIn Functionality
     Then user is successfully redirected to the Contact List page
     Examples:
       | email            | password         |
-#      | john.stone@mail.com | test123          |
       | any.key@mail.com | any.key@mail.com |
 
   @LogIn @NegativeFlow
   Scenario Outline: An user cannot login using invalid credentials
-    When user populates only one required field form login form with valid data
+    When user trying to login with invalid data
       | Email   | Password   |
       | <email> | <password> |
-    And user clicks on Submit button
     Then user is not logged in
-    And the <warning message> is displayed
+    And the 'Incorrect username or password' error message is displayed
     Examples:
-      | email               | password | warning message                |
-      | john.stone@mail.com |          | Incorrect username or password |
-      |                     | test123  | Incorrect username or password |
-      |                     |          | Incorrect username or password |
+      | email               | password |
+      | jon.stone.mail.com  | 123      |
+      | john.stone@mail.com | <empty>  |
+      | <empty>             | test123  |
+      | <empty>             | <empty>  |

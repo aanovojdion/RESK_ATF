@@ -1,5 +1,8 @@
 package org.example.drivers;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.example.config.PropertyLoader;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -12,63 +15,73 @@ import java.util.concurrent.TimeUnit;
 import static org.example.config.PropertyLoader.getProperty;
 
 public class DriverManager {
+
     private static WebDriver driver;
+    private static final Logger logger = LogManager.getLogger(DriverManager.class);
 
     private DriverManager() {
+        driver = getManager();
     }
 
-    public static WebDriver getManager() {
-        String browser = PropertyLoader.getProperty("browser");
-        switch (browser) {
-            case "CHROME":
-                return getChromeDriver();
-            case "FIREFOX":
-                return getFirefoxDriver();
-            default:
-                throw new RuntimeException("Unexpected browser type: " + browser);
-        }
+    private static WebDriver getManager() {
+        String browser = PropertyLoader.getProperty("BROWSER");
+        return switch (browser) {
+            case "CHROME" -> getChromeDriver();
+            case "FIREFOX" -> getFirefoxDriver();
+            default -> throw new RuntimeException("Unexpected browser type: " + browser);
+        };
     }
 
     private static WebDriver getChromeDriver() {
         if (driver == null) {
-            ChromeOptions options = new ChromeOptions();
+            WebDriverManager.chromedriver().setup();
+            ChromeOptions chromeOptions = new ChromeOptions();
             try {
-                options.setHeadless(Boolean.parseBoolean(getProperty("headless")));
+                chromeOptions.setHeadless(Boolean.parseBoolean(getProperty("HEADLESS")));
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            System.setProperty("webdriver.chrome.driver", "src/test/resources/drivers/chromedriver.exe");
-            driver = new ChromeDriver(options);
-            driver.manage().timeouts().implicitlyWait(110, TimeUnit.SECONDS);
-//            driver.manage().window().maximize();
+            driver = new ChromeDriver(chromeOptions);
+            driver.manage().window().maximize();
+            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         }
         return driver;
     }
 
+
     private static WebDriver getFirefoxDriver() {
         if (driver == null) {
-            FirefoxOptions options = new FirefoxOptions();
+            WebDriverManager.firefoxdriver().setup();
+            FirefoxOptions firefoxOptions = new FirefoxOptions();
             try {
-                options.setHeadless(Boolean.parseBoolean(getProperty("headless")));
+                firefoxOptions.setHeadless(Boolean.parseBoolean(getProperty("HEADLESS")));
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            System.setProperty("webdriver.ghecko.driver", "src/test/resources/drivers/geckodriver.exe");
-            driver = new FirefoxDriver();
-//            driver.manage().window().maximize();
+            driver = new FirefoxDriver(firefoxOptions);
+            driver.manage().window().maximize();
+            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         }
         return driver;
     }
 
     public static WebDriver getDriver() {
-        return getManager();
+        if (driver == null) {
+            try {
+                new DriverManager();
+            } catch (Exception ex) {
+                throw new IllegalStateException("WebDriver has not been initialized. Call setUpDriver() first.");
+            }
+        }
+        return driver;
     }
 
     public static void quitDriver() {
         if (driver != null) {
+            driver.close();
             driver.quit();
             driver = null;
+            logger.debug("WebDriver has been quit and reset.");
         }
     }
-
 }
