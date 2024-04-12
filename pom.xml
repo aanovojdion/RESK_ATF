@@ -12,79 +12,74 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <junit-jupiter-api.version>5.10.2</junit-jupiter-api.version>
+        <cucumber-java.version>7.15.0</cucumber-java.version>
+        <log4j-core.version>2.23.1</log4j-core.version>
+        <log4j-api.version>2.23.1</log4j-api.version>
+        <slf4j-api.version>1.6.4</slf4j-api.version>
+        <slf4j-simple.version>1.7.25</slf4j-simple.version>
+        <selenium-java.version>4.19.1</selenium-java.version>
+        <rest-assured.version>5.4.0</rest-assured.version>
+        <cucumber-picocontainer.version>7.15.0</cucumber-picocontainer.version>
     </properties>
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.10.2</version>
+            <version>${junit-jupiter-api.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
-        <dependency>
-            <groupId>io.github.bonigarcia</groupId>
-            <artifactId>webdrivermanager</artifactId>
-            <version>5.7.0</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-java -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
-            <version>7.15.0</version>
+            <version>${cucumber-java.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-junit -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit</artifactId>
-            <version>7.15.0</version>
+            <version>${cucumber-java.version}</version>
             <scope>test</scope>
         </dependency>
-        <!--Log4j is a logging framework for Java. These dependencies are for Log4j version 2.-->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.17.1</version>
+            <version>${log4j-core.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
-            <version>2.17.1</version>
+            <version>${log4j-api.version}</version>
         </dependency>
-        <!--SLF4J is a simple logging facade for Java. These dependencies are for SLF4J and its simple implementation.-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.6.4</version>
+            <version>${slf4j-api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.25</version>
+            <version>${slf4j-simple.version}</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>3.141.59</version>
+            <version>${selenium-java.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-picocontainer -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-picocontainer</artifactId>
-            <version>7.15.0</version>
+            <version>${cucumber-picocontainer.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
-            <version>5.4.0</version>
+            <version>${rest-assured.version}</version>
             <scope>test</scope>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.projectlombok</groupId>-->
-        <!--            <artifactId>lombok</artifactId>-->
-        <!--            <version>1.18.30</version>-->
-        <!--            <scope>provided</scope>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>json-schema-validator</artifactId>
+            <version>${rest-assured.version}</version>
+        </dependency>
     </dependencies>
 </project>
