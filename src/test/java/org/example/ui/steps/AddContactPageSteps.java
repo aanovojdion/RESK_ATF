@@ -69,5 +69,4 @@ public class AddContactPageSteps {
         logger.info("The Add Contact page is displayed.");
         logger.info("A Contact is not added.");
     }
-
 }

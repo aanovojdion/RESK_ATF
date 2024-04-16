@@ -2,21 +2,21 @@ package org.example.api.dtos.requests;
 
 import java.util.Map;
 
-public class CreateUserData {
+public class UserData {
     private String firstName;
     private String lastName;
     private String email;
     private String password;
 
 
-    public CreateUserData(String firstName, String lastName, String email, String password) {
+    public UserData(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
     }
 
-    public CreateUserData(Map<String, String> newUserData) {
+    public UserData(Map<String, String> newUserData) {
         this.firstName = newUserData.get("firstName");
         this.lastName = newUserData.get("lastName");
         this.email = newUserData.get("email");

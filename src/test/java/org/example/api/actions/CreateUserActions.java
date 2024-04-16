@@ -7,7 +7,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.example.api.dtos.requests.CreateUserData;
+import org.example.api.dtos.requests.UserData;
 import org.example.api.dtos.responses.SuccessNewUserCreate;
 import org.example.configurations.Specifications;
 import org.example.configurations.context.ScenarioContext;
@@ -29,7 +29,7 @@ public class CreateUserActions {
     @Given("user is using valid data")
     public void userIsUsingValidData(Map<String, String> createUserData) {
         logger.info("Preparing the user data");
-        scenarioContext.setContext(USERDATA, new CreateUserData(createUserData));
+        scenarioContext.setContext(USERDATA, new UserData(createUserData));
         logger.info("User data was prepared");
     }
 
@@ -39,16 +39,16 @@ public class CreateUserActions {
             logger.info("Sending a request to create a new user");
             Specifications.installSpecification(Specifications.requestSpec(), Specifications.responseSpec(201));
             Response response = given()
-                    .body(scenarioContext.getContext(USERDATA, CreateUserData.class))
+                    .body(scenarioContext.getContext(USERDATA, UserData.class))
                     .when()
                     .post("/users")
                     .then()
                     .log().all()
                     .extract().response();
             scenarioContext.setContext(RESPONSE, response);
-            logger.info("The new user has been successfully created");
+            logger.info("A request to create a new user has been sent");
         } catch (Exception ex) {
-            logger.error("New user creation failed", ex);
+            logger.error("The request to create a new user failed.", ex);
             throw new CustomException(ex.getMessage());
         }
     }
@@ -63,8 +63,11 @@ public class CreateUserActions {
             assertNotNull(token);
             successNewUserCreate.setToken(token);
             logger.info("The token has been received");
+            logger.info("The new user has been successfully created");
         } catch (Exception ex) {
             logger.error("The token has not been received");
+            logger.error("New user creation failed", ex);
+            throw new CustomException(ex.getMessage());
         }
     }
 }

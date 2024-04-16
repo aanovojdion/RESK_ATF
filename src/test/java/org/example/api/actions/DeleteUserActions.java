@@ -4,6 +4,9 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.example.api.dtos.requests.UserData;
 import org.example.configurations.Specifications;
 import org.example.configurations.context.ScenarioContext;
 import org.example.utils.CustomException;
@@ -12,9 +15,12 @@ import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.example.configurations.context.ScenarioContext.ContextKeys.RESPONSE;
+import static org.example.configurations.context.ScenarioContext.ContextKeys.USERDATA;
 
 public class DeleteUserActions {
     private static final ScenarioContext scenarioContext = ScenarioContext.getInstance();
+    private static final Logger logger = LogManager.getLogger(DeleteUserActions.class);
+
 
     CreateUserActions createUserActions = new CreateUserActions();
     LoginUserActions loginUserActions = new LoginUserActions();
@@ -28,6 +34,7 @@ public class DeleteUserActions {
 
     @When("a request to delete user is sent")
     public void aRequestToDeleteUserIsSent() {
+        logger.info("Sending a request to delete the current user.");
         Specifications.installSpecification(Specifications.requestSpec(), Specifications.responseSpec(200));
         given().header("Authorization", scenarioContext
                         .getContext(RESPONSE, Response.class)
@@ -42,22 +49,20 @@ public class DeleteUserActions {
 
     @Then("the user has successfully deleted")
     public void theUserHasSuccessfullyDeleted() {
-//        loginUserActions.aRequestToLoginIsSent();
-//        scenarioContext.getContext(RESPONSE, Response.class);
+        scenarioContext.getContext(RESPONSE, Response.class);
         try {
             logger.info("Sending a login request");
-            Specifications.installSpecification(Specifications.requestSpec(), Specifications.responseSpec(200));
+            Specifications.installSpecification(Specifications.requestSpec(), Specifications.responseSpec(401));
             Response response = given()
-                    .body(user)
+                    .body(scenarioContext.getContext(USERDATA, UserData.class))
                     .when()
                     .post("/users/login")
                     .then().log().all()
                     .extract().response();
-            scenarioContext.setContext(RESPONSE, response);
+            logger.info("The user is not logged in, which indicates a successful deletion.");
         } catch (Exception ex) {
-            logger.error("Login failed", ex);
+            logger.error("An error occurred during the login attempt: {}", ex.getMessage());
             throw new CustomException(ex.getMessage());
         }
-    }
     }
 }

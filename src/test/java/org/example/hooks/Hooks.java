@@ -5,6 +5,8 @@ import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.example.api.actions.DeleteUserActions;
+import org.example.api.actions.LoginUserActions;
 import org.example.configurations.context.ScenarioContext;
 import org.example.configurations.drivers.DriverManager;
 import org.openqa.selenium.WebDriver;
@@ -19,6 +21,9 @@ public class Hooks {
     private static final Logger logger = LogManager.getLogger(Hooks.class);
     private static final ScenarioContext scenarioContext = ScenarioContext.getInstance();
 
+    DeleteUserActions deleteUserActions = new DeleteUserActions();
+    LoginUserActions loginUserActions = new LoginUserActions();
+
     @Before
     public void beforeScenario(Scenario scenario) {
         String scenarioName = scenario.getName();
@@ -29,8 +34,23 @@ public class Hooks {
         logger.info("Scenario '{}' started.", scenarioName);
     }
 
+//    @Before("@AddContact")
+//    public void beforeAddContact() {
+//        loginUserActions.userIsUsingValidCredentials();
+//        loginUserActions.aRequestToLoginIsSent();
+//        DeleteContactsActions.clearContactList();
+//    }
+
+    @After("@UserCreation")
+    public void afterUserCreation() {
+        deleteUserActions.aRequestToDeleteUserIsSent();
+        logger.info("The user created for testing purposes was successfully deleted.");
+    }
+
     @After
     public void afterScenario() {
         DriverManager.quitDriver();
     }
+
+//TODO: in @After clean scenario context (teardown)
 }

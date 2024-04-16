@@ -1,4 +1,4 @@
-@API
+@API @UserCreation
 Feature: Successful creation of a new user
 
   Scenario: Successful creation of a new user

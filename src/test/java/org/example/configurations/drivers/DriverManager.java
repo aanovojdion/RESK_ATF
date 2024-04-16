@@ -10,7 +10,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 
 import static org.example.configurations.PropertyLoader.getProperty;
 
-//TODO: Add headless from application.properties
+//TODO: Refactor true/false headless from application.properties
 public class DriverManager {
 
     private static String browserOptions = getProperty("browser.options.headless");
@@ -30,7 +30,7 @@ public class DriverManager {
                 logger.info("Unexpected browser type: " + browser);
                 logger.info("Initializing Chrome browser as default");
                 yield getChromeDriver();
-                //TODO read about YIELD (youtube video)
+                //TODO read about YIELD
             }
         };
     }

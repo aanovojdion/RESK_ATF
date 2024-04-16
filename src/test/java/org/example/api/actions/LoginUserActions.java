@@ -6,9 +6,9 @@ import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.example.api.dtos.requests.CreateUserData;
-import org.example.api.dtos.requests.LoginUserData;
+import org.example.api.dtos.requests.UserData;
 import org.example.api.dtos.responses.SuccessLoginResponse;
+import org.example.api.dtos.responses.SuccessNewUserCreate;
 import org.example.configurations.Specifications;
 import org.example.configurations.context.ScenarioContext;
 import org.example.utils.CustomException;
@@ -17,6 +17,7 @@ import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.example.configurations.context.ScenarioContext.ContextKeys.RESPONSE;
+import static org.example.configurations.context.ScenarioContext.ContextKeys.USERDATA;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -25,23 +26,26 @@ public class LoginUserActions {
     private static final Logger logger = LogManager.getLogger(LoginUserActions.class);
 
 
-    LoginUserData user;
+    //    LoginUserData user;
     SuccessLoginResponse successLoginResponse;
 
+    SuccessNewUserCreate successNewUserCreate = new SuccessNewUserCreate();
+
+
     @Given("user is using valid credentials")
-    public void userIsUsingValidCredentials(Map<String, String> userData) {
-        user = new LoginUserData(userData);
+    public void userIsUsingValidCredentials(Map<String, String> createUserData) {
         logger.info("Preparing the user data");
+        scenarioContext.setContext(USERDATA, new UserData(createUserData));
+        logger.info("User data was prepared");
     }
 
     @When("a request to login is sent")
     public void aRequestToLoginIsSent() {
-        CreateUserData createUserData = new CreateUserData();
         try {
             logger.info("Sending a login request");
             Specifications.installSpecification(Specifications.requestSpec(), Specifications.responseSpec(200));
             Response response = given()
-                    .body(user)
+                    .body(scenarioContext.getContext(USERDATA, UserData.class))
                     .when()
                     .post("/users/login")
                     .then().log().all()
@@ -61,8 +65,7 @@ public class LoginUserActions {
             successLoginResponse = response.as(SuccessLoginResponse.class);
             assertNotNull(successLoginResponse.getToken());
             assertEquals(response.getStatusCode(), 200);
-            assertEquals(successLoginResponse.getUser().getEmail(), user.getEmail());
-            logger.info("Login verification was successful");
+            assertEquals(successLoginResponse.getUser().getEmail(), scenarioContext.getContext(USERDATA, UserData.class).getEmail());
             logger.info("User is successfully logged in");
         } catch (Exception ex) {
             logger.error("Login verification failed", ex);

@@ -78,6 +78,11 @@ public class HomePageSteps {
         logger.info("User logins with valid data.");
     }
 
+    @And("the Contact List is empty")
+    public void contactListIsEmpty() {
+
+    }
+
     @And("newly added user is displayed in the table")
     public void newlyAddedUserIsDisplayedInTheTable() {
         logger.info("New Contact is successfully added.");

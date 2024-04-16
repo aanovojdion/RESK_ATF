@@ -31,5 +31,4 @@ public class ContactListPageSteps {
         assertEquals(contactListUrl, (scenarioContext.getContext(DRIVER, WebDriver.class)).getCurrentUrl());
         logger.info("The Contact List page is displayed.");
     }
-
 }
