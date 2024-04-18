@@ -23,6 +23,10 @@ public class UserData {
         this.password = newUserData.get("password");
     }
 
+    public UserData(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 
     public String getFirstName() {
         return firstName;

@@ -35,7 +35,8 @@ public class HomePageSteps {
         logger.info("User is on the Home page");
     }
 
-    // @Login_TC01
+    //TODO: URL to ENUM
+
     @When("user logins with valid {string} and {string}")
     public void fillLoginForm(String email, String password) {
         homePage.fillLoginForm(email, password);

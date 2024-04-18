@@ -21,6 +21,7 @@
         <selenium-java.version>4.19.1</selenium-java.version>
         <rest-assured.version>5.4.0</rest-assured.version>
         <cucumber-picocontainer.version>7.15.0</cucumber-picocontainer.version>
+        <commons-io>2.16.1</commons-io>
     </properties>
     <dependencies>
         <dependency>
@@ -80,6 +81,11 @@
             <groupId>io.rest-assured</groupId>
             <artifactId>json-schema-validator</artifactId>
             <version>${rest-assured.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io}</version>
         </dependency>
     </dependencies>
 </project>

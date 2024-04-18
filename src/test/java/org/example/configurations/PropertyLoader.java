@@ -21,13 +21,13 @@ public class PropertyLoader {
     private static void loadProperties() {
         if (properties == null) {
             properties = new Properties();
-            try (InputStream ip = new FileInputStream("src/test/java/org/example/configurations/application.properties")) {
+            try (InputStream ip = new FileInputStream("src/test/resources/application.properties")) {
                 properties.load(ip);
             } catch (IOException e) {
                 logger.info("Failed to load properties file: " + e.getMessage());
                 throw new RuntimeException("Failed to load properties file", e);
             }
-        }
+        }//TODO: read about exceptions
     }
 
     public static String getProperty(String key) {

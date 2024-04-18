@@ -18,6 +18,13 @@ public class ContactListPageSteps {
     private final String contactListUrl = PropertyLoader.getProperty("browser.contact_list_url");
     private static final Logger logger = LogManager.getLogger(ContactListPageSteps.class);
 
+    @Then("user has been successfully registered")
+    public void userHasBeenSuccessfullyRegistered() {
+        assertEquals("Contact List", contactListPage.getPageTitle().getText());
+        assertEquals(contactListUrl, (scenarioContext.getContext(DRIVER, WebDriver.class)).getCurrentUrl());
+        logger.info("User has successfully logged in.");
+    }
+
     @Then("user has successfully logged in")
     public void userHasLoggedIn() {
         assertEquals("Contact List", contactListPage.getPageTitle().getText());

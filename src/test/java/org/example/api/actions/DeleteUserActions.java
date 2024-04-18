@@ -23,7 +23,7 @@ public class DeleteUserActions {
 
 
     CreateUserActions createUserActions = new CreateUserActions();
-    LoginUserActions loginUserActions = new LoginUserActions();
+//    LoginUserActions loginUserActions = new LoginUserActions();
 
 
     @Given("user with valid data is already created")

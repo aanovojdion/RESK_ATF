@@ -54,6 +54,24 @@ public class LoginUserActions {
         } catch (Exception ex) {
             logger.error("Login failed", ex);
             throw new CustomException(ex.getMessage());
+        }//TODO: Дописать Exception
+    }
+
+    @When("a request to login with credentials is sent")
+    public void aRequestToLoginWithCredentialsIsSent(String email, String password) {
+        UserData userData = new UserData(email, password);
+        try {
+            logger.info("Sending a login request");
+            Specifications.installSpecification(Specifications.requestSpec(), Specifications.responseSpec(200));
+            Response response = given()
+                    .body(userData)
+                    .when()
+                    .post("/users/login")
+                    .then().log().all()
+                    .extract().response();
+            scenarioContext.setContext(RESPONSE, response);
+        } catch (Exception ex) {
+            logger.error("Login failed", ex);
         }
     }
 
