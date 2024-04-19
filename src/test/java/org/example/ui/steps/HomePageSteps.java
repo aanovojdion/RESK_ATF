@@ -9,21 +9,18 @@ import io.cucumber.java.en.When;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.example.configurations.PropertyLoader;
-import org.example.configurations.context.ScenarioContext;
+import org.example.configurations.drivers.DriverManager;
 import org.example.ui.pages.HomePage;
-import org.openqa.selenium.WebDriver;
 
 import java.util.Map;
 
-import static org.example.configurations.context.ScenarioContext.ContextKeys.DRIVER;
 import static org.example.utils.BrowserActions.assertVisibilityOf;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class HomePageSteps {
 
-    private static final ScenarioContext scenarioContext = ScenarioContext.getInstance();
-    private final HomePage homePage = new HomePage((scenarioContext.getContext(DRIVER, WebDriver.class)));
+    private final HomePage homePage = new HomePage(DriverManager.getDriver());
     private final String validEmail = PropertyLoader.getProperty("credentials.email");
     private final String validPassword = PropertyLoader.getProperty("credentials.password");
     private static final Logger logger = LogManager.getLogger(HomePageSteps.class);
@@ -31,11 +28,9 @@ public class HomePageSteps {
 
     @Given("user is on the Home page")
     public void userIsOnTheHomePage() {
-        (scenarioContext.getContext(DRIVER, WebDriver.class)).get(PropertyLoader.getProperty("browser.homepage_url"));
+        DriverManager.getDriver().get(PropertyLoader.getProperty("browser.homepage_url"));
         logger.info("User is on the Home page");
     }
-
-    //TODO: URL to ENUM
 
     @When("user logins with valid {string} and {string}")
     public void fillLoginForm(String email, String password) {

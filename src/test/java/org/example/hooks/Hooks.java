@@ -6,16 +6,21 @@ import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.ThreadContext;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.example.api.actions.DeleteUserActions;
 import org.example.api.actions.LoginUserActions;
+import org.example.configurations.api_configs.EndPoints;
 import org.example.configurations.context.ScenarioContext;
 import org.example.configurations.drivers.DriverManager;
 import org.example.utils.ScreenShotUtil;
 import org.openqa.selenium.WebDriver;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static org.example.configurations.context.ScenarioContext.ContextKeys.*;
+import static org.example.configurations.context.ScenarioContext.ObjectKeys.EMAIL;
+import static org.example.configurations.context.ScenarioContext.ObjectKeys.PASSWORD;
 
 
 public class Hooks {
@@ -27,6 +32,10 @@ public class Hooks {
     @Before("@API")
     public static void beforeAPI(Scenario scenario) {
         scenarioContext = ScenarioContext.getInstance();
+        String scenarioName = scenario.getName().trim().replaceAll(" ", "_");
+        ThreadContext.put("scenarioName", scenarioName);
+        Configurator.reconfigure();
+        ScenarioContext.tearDown();
         logger.info("---------------------Scenario '{}' started.---------------------", scenario.getName());
     }
 
@@ -34,9 +43,12 @@ public class Hooks {
     public static void beforeUI(Scenario scenario) {
         scenarioContext = ScenarioContext.getInstance();
         WebDriver webDriver = DriverManager.getDriver();
-        scenarioContext.setContext(DRIVER, webDriver);
         webDriver.manage().window().maximize();
         webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        String scenarioName = scenario.getName().trim().replaceAll(" ", "_");
+        ThreadContext.put("scenarioName", scenarioName);
+        Configurator.reconfigure();
+        ScenarioContext.tearDown();
         logger.info("---------------------Scenario '{}' started.---------------------", scenario.getName());
     }
 
@@ -46,10 +58,10 @@ public class Hooks {
     }
 
 
-    @After("@UserCreation")
+    @After("@UserCreationAPI")
     public void afterUserCreation() {
         DeleteUserActions deleteUserActions = new DeleteUserActions();
-        deleteUserActions.aRequestToDeleteUserIsSent();
+        deleteUserActions.aRequestToDeleteUserIsSent(EndPoints.DELETE_USER);
         logger.info("The user created for testing purposes was successfully deleted.");
     }
 
@@ -57,17 +69,16 @@ public class Hooks {
     public void afterUI(Scenario scenario) {
         logger.info("---------------------Scenario '{}' ended.---------------------", scenario.getName());
         DriverManager.quitDriver();
-        ScenarioContext.tearDown();
     }
 
     @After("@SuccessfullyUserRegistration")
     public void successfullyUserRegistration(Scenario scenario) {
         LoginUserActions loginUserActions = new LoginUserActions();
         DeleteUserActions deleteUserActions = new DeleteUserActions();
-        String email = scenarioContext.getContext(EMAIL, String.class);
-        String password = scenarioContext.getContext(PASSWORD, String.class);
-        loginUserActions.aRequestToLoginWithCredentialsIsSent(email, password);
-        deleteUserActions.aRequestToDeleteUserIsSent();
+        Map<String, String> credentials = Map.of("email", scenarioContext.getContext(EMAIL, String.class), "password", scenarioContext.getContext(PASSWORD, String.class));
+        loginUserActions.userIsUsingValidCredentials(credentials);
+        loginUserActions.aRequestToLoginIsSent(EndPoints.LOGIN_USER);
+        deleteUserActions.aRequestToDeleteUserIsSent(EndPoints.DELETE_USER);
         logger.info("The user created for testing purposes was successfully deleted.");
         logger.info("---------------------Scenario '{}' ended.---------------------", scenario.getName());
     }
@@ -75,6 +86,5 @@ public class Hooks {
     @After("@API")
     public void afterAPI(Scenario scenario) {
         logger.info("---------------------Scenario '{}' ended.---------------------", scenario.getName());
-        ScenarioContext.tearDown();
     }
 }

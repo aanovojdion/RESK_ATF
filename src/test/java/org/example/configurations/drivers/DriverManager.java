@@ -22,15 +22,14 @@ public class DriverManager {
     }
 
     private static WebDriver getManager() {
-        String browser = getProperty("browser.type");
+        String browser = getProperty("browser.type").toLowerCase().trim();
         return switch (browser) {
-            case "CHROME" -> getChromeDriver();
-            case "FIREFOX" -> getFirefoxDriver();
+            case "chrome" -> getChromeDriver();
+            case "firefox" -> getFirefoxDriver();
             default -> {
                 logger.info("Unexpected browser type: " + browser);
                 logger.info("Initializing Chrome browser as default");
                 yield getChromeDriver();
-                //TODO read about YIELD
             }
         };
     }

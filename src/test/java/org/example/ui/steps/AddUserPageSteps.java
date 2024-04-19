@@ -6,12 +6,13 @@ import io.cucumber.java.en.When;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.example.configurations.context.ScenarioContext;
+import org.example.configurations.drivers.DriverManager;
 import org.example.ui.pages.AddUserPage;
-import org.openqa.selenium.WebDriver;
 
 import java.util.Map;
 
-import static org.example.configurations.context.ScenarioContext.ContextKeys.*;
+import static org.example.configurations.context.ScenarioContext.ObjectKeys.EMAIL;
+import static org.example.configurations.context.ScenarioContext.ObjectKeys.PASSWORD;
 import static org.example.utils.BrowserActions.assertVisibilityOf;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class AddUserPageSteps {
 
     private static final ScenarioContext scenarioContext = ScenarioContext.getInstance();
-    private final AddUserPage addUserPage = new AddUserPage((scenarioContext.getContext(DRIVER, WebDriver.class)));
+    private final AddUserPage addUserPage = new AddUserPage(DriverManager.getDriver());
     private static final Logger logger = LogManager.getLogger(AddUserPageSteps.class);
 
 

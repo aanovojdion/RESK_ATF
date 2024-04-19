@@ -7,15 +7,15 @@ import io.restassured.response.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.example.api.dtos.requests.UserData;
-import org.example.configurations.Specifications;
+import org.example.configurations.api_configs.EndPoints;
+import org.example.configurations.api_configs.Specifications;
 import org.example.configurations.context.ScenarioContext;
-import org.example.utils.CustomException;
 
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
-import static org.example.configurations.context.ScenarioContext.ContextKeys.RESPONSE;
-import static org.example.configurations.context.ScenarioContext.ContextKeys.USERDATA;
+import static org.example.configurations.context.ScenarioContext.ObjectKeys.RESPONSE;
+import static org.example.configurations.context.ScenarioContext.ObjectKeys.USERDATA;
 
 public class DeleteUserActions {
     private static final ScenarioContext scenarioContext = ScenarioContext.getInstance();
@@ -29,11 +29,11 @@ public class DeleteUserActions {
     @Given("user with valid data is already created")
     public void userWithValidDataIsAlreadyCreated(Map<String, String> createUserData) {
         createUserActions.userIsUsingValidData(createUserData);
-        createUserActions.aRequestToCreateANewUserIsSent();
+        createUserActions.aRequestToCreateANewUserIsSent(EndPoints.CREATE_USER);
     }
 
-    @When("a request to delete user is sent")
-    public void aRequestToDeleteUserIsSent() {
+    @When("a request to delete user is sent to {endPoint} endPoint")
+    public void aRequestToDeleteUserIsSent(EndPoints endPoint) {
         logger.info("Sending a request to delete the current user.");
         Specifications.installSpecification(Specifications.requestSpec(), Specifications.responseSpec(200));
         given().header("Authorization", scenarioContext
@@ -41,7 +41,7 @@ public class DeleteUserActions {
                         .jsonPath()
                         .getString("token"))
                 .when()
-                .delete("/users/me")
+                .delete(endPoint.getValue())
                 .then()
                 .log().all()
                 .extract().response();
@@ -62,7 +62,7 @@ public class DeleteUserActions {
             logger.info("The user is not logged in, which indicates a successful deletion.");
         } catch (Exception ex) {
             logger.error("An error occurred during the login attempt: {}", ex.getMessage());
-            throw new CustomException(ex.getMessage());
+            throw new RuntimeException(ex.getMessage());
         }
     }
 }

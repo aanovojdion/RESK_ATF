@@ -2,7 +2,6 @@ package org.example.configurations;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.example.utils.CustomException;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -37,7 +36,7 @@ public class PropertyLoader {
         String value = properties.getProperty(key);
         if (value == null) {
             logger.info("Property not found for key: " + key);
-            throw new CustomException("Property not found for key: " + key);
+            throw new RuntimeException("Property not found for key: " + key);
         }
         return properties.getProperty(key);
     }

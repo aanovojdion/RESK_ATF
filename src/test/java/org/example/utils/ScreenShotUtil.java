@@ -23,10 +23,7 @@ public class ScreenShotUtil {
         scenario.attach(scrFile, "image/png", "SCREENSHOT");
         try {
             FileUtils.writeByteArrayToFile(new File("target/screenshots/"
-                    + new SimpleDateFormat("dd-MMM-yyyy"
-                    + " "
-                    + scenario.getName()
-                    + ".png").format(new Date())), scrFile);
+                    + new SimpleDateFormat("dd-MMM-yyyy HH.mm.ss.ssssss' " + scenario.getName() + ".png'").format(new Date())), scrFile);
         } catch (IOException e) {
             logger.info("Failed to save screenshot");
         }

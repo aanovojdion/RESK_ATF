@@ -9,7 +9,7 @@ import java.util.Map;
 
 
 public class ScenarioContext {
-    private final Map<ContextKeys, Object> scenarioContext;
+    private static Map<ObjectKeys, Object> scenarioContext;
     private static ScenarioContext instance;
     private static final Logger logger = LogManager.getLogger(PropertyLoader.class);
 
@@ -19,11 +19,11 @@ public class ScenarioContext {
         scenarioContext = new HashMap<>();
     }
 
-    public void setContext(ContextKeys key, Object value) {
+    public void setContext(ObjectKeys key, Object value) {
         scenarioContext.put(key, value);
     }
 
-    public <T> T getContext(ContextKeys key, Class<T> type) {
+    public <T> T getContext(ObjectKeys key, Class<T> type) {
         return type.cast(scenarioContext.get(key));
     }
 
@@ -35,14 +35,11 @@ public class ScenarioContext {
     }
 
     public static void tearDown() {
-        if (instance != null) {
-            instance = null;
-            logger.info("Scenario context was cleared");
-        }
+        scenarioContext.clear();
+        logger.info("ScenarioContext has been cleared, size = {}", scenarioContext.size());
     }
 
-    public enum ContextKeys {
-        DRIVER,
+    public enum ObjectKeys {
         RESPONSE,
         USERDATA,
         EMAIL,
