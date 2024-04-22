@@ -49,19 +49,6 @@ public class AddUserPageSteps {
         logger.debug("An error message is displayed on the screen");
     }
 
-//    @When("user submits registration form with already registered user data")
-//    public void fillRegistrationFor1111m(DataTable table) {
-//        List<Map<String, String>> rows = table.asMaps(String.class, String.class);
-//        for (Map<String, String> row : rows) {
-//            String firstName = row.get("firstName");
-//            String lastName = row.get("lastName");
-//            String email = row.get("email");
-//            String password = row.get("password");
-//            addUserPage.fillRegistrationForm(firstName, lastName, email, password);
-//        }
-//        logger.info("User submits registration form with already registered user data");
-//    }
-
     @Then("the {string} error message is displayed on the screen")
     public void theErrorMessageIsDisplayedOnTheScreen(String expectedErrorMessage) {
         assertVisibilityOf(addUserPage.getErrorMessageElement());

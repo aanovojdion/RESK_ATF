@@ -26,7 +26,7 @@ public class PropertyLoader {
                 logger.info("Failed to load properties file: " + e.getMessage());
                 throw new RuntimeException("Failed to load properties file", e);
             }
-        }//TODO: read about exceptions
+        }
     }
 
     public static String getProperty(String key) {

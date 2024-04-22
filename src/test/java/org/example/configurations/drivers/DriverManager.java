@@ -10,7 +10,6 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 
 import static org.example.configurations.PropertyLoader.getProperty;
 
-//TODO: Refactor true/false headless from application.properties
 public class DriverManager {
 
     private static String browserOptions = getProperty("browser.options.headless");
@@ -41,7 +40,11 @@ public class DriverManager {
     }
 
     private static ChromeOptions getChromeOptions() {
-        return new ChromeOptions().addArguments(browserOptions);
+        if (Boolean.parseBoolean(getProperty("browser.options.headless"))) {
+            logger.info("Chrome will be set to run in headless mode");
+            return new ChromeOptions().addArguments("headless");
+        }
+        return new ChromeOptions();
     }
 
     private static WebDriver getFirefoxDriver() {
