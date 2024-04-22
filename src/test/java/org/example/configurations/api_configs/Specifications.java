@@ -22,7 +22,7 @@ public class Specifications {
         return new ResponseSpecBuilder()
                 .expectStatusCode(statusCode)
                 .build();
-    }//TODO: read about Builder pattern
+    }
 
     public static void installSpecification(RequestSpecification request, ResponseSpecification response) {
         RestAssured.requestSpecification = request;

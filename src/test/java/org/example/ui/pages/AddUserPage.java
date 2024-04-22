@@ -4,6 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import static org.example.utils.BrowserActions.assertVisibilityOf;
+
 public class AddUserPage extends BasePage {
     @FindBy(xpath = "//h1[text()='Add User']")
     private WebElement pageTitleElement;
@@ -24,7 +26,7 @@ public class AddUserPage extends BasePage {
     }
 
     public WebElement getPageTitleElement() {
-        return pageTitleElement;
+        return assertVisibilityOf(pageTitleElement);
     }
 
     public WebElement getErrorMessageElement() {

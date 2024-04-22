@@ -1,8 +1,6 @@
 package org.example.configurations.context;
 
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.example.configurations.PropertyLoader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +9,6 @@ import java.util.Map;
 public class ScenarioContext {
     private static Map<ObjectKeys, Object> scenarioContext;
     private static ScenarioContext instance;
-    private static final Logger logger = LogManager.getLogger(PropertyLoader.class);
 
 
     private ScenarioContext() {
@@ -36,7 +33,7 @@ public class ScenarioContext {
 
     public static void tearDown() {
         scenarioContext.clear();
-        logger.info("ScenarioContext has been cleared, size = {}", scenarioContext.size());
+        LogManager.getLogger().info("ScenarioContext has been cleared, size = {}", scenarioContext.size());
     }
 
     public enum ObjectKeys {

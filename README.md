@@ -2,8 +2,11 @@
 
 ## Introduction
 
-This framework provides convenient tools for automated testing in Java using Selenium WebDriver, RestAssured, and other
+This framework provides convenient tools for automated testing in Java using Maven, Cucumber, Selenium WebDriver,
+RestAssured, and other
 libraries.
+
+### System under test: https://thinking-tester-contact-list.herokuapp.com
 
 ## Features
 

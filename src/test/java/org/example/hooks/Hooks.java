@@ -5,7 +5,6 @@ import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.example.api.actions.DeleteUserActions;
@@ -25,8 +24,6 @@ import static org.example.configurations.context.ScenarioContext.ObjectKeys.PASS
 
 public class Hooks {
 
-    private static final Logger logger = LogManager.getLogger(Hooks.class);
-
     private static ScenarioContext scenarioContext;
 
     @Before("@API")
@@ -36,20 +33,20 @@ public class Hooks {
         ThreadContext.put("scenarioName", scenarioName);
         Configurator.reconfigure();
         ScenarioContext.tearDown();
-        logger.info("---------------------Scenario '{}' started.---------------------", scenario.getName());
+        LogManager.getLogger().info("---------------------Scenario '{}' started.---------------------", scenario.getName());
     }
 
     @Before("@UI")
     public static void beforeUI(Scenario scenario) {
+        String scenarioName = scenario.getName().trim().replaceAll(" ", "_");
+        ThreadContext.put("scenarioName", scenarioName);
+        Configurator.reconfigure();
         scenarioContext = ScenarioContext.getInstance();
         WebDriver webDriver = DriverManager.getDriver();
         webDriver.manage().window().maximize();
         webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        String scenarioName = scenario.getName().trim().replaceAll(" ", "_");
-        ThreadContext.put("scenarioName", scenarioName);
-        Configurator.reconfigure();
         ScenarioContext.tearDown();
-        logger.info("---------------------Scenario '{}' started.---------------------", scenario.getName());
+        LogManager.getLogger().info("---------------------Scenario '{}' started.---------------------", scenario.getName());
     }
 
     @AfterStep("@UI")
@@ -62,12 +59,12 @@ public class Hooks {
     public void afterUserCreation() {
         DeleteUserActions deleteUserActions = new DeleteUserActions();
         deleteUserActions.aRequestToDeleteUserIsSent(EndPoints.DELETE_USER);
-        logger.info("The user created for testing purposes was successfully deleted.");
+        LogManager.getLogger().info("The user created for testing purposes was successfully deleted.");
     }
 
     @After("@UI")
     public void afterUI(Scenario scenario) {
-        logger.info("---------------------Scenario '{}' ended.---------------------", scenario.getName());
+        LogManager.getLogger().info("---------------------Scenario '{}' ended.---------------------", scenario.getName());
         DriverManager.quitDriver();
     }
 
@@ -79,12 +76,11 @@ public class Hooks {
         loginUserActions.userIsUsingValidCredentials(credentials);
         loginUserActions.aRequestToLoginIsSent(EndPoints.LOGIN_USER);
         deleteUserActions.aRequestToDeleteUserIsSent(EndPoints.DELETE_USER);
-        logger.info("The user created for testing purposes was successfully deleted.");
-        logger.info("---------------------Scenario '{}' ended.---------------------", scenario.getName());
+        LogManager.getLogger().info("The user created for testing purposes was successfully deleted.");
     }
 
     @After("@API")
     public void afterAPI(Scenario scenario) {
-        logger.info("---------------------Scenario '{}' ended.---------------------", scenario.getName());
+        LogManager.getLogger().info("---------------------Scenario '{}' ended.---------------------", scenario.getName());
     }
 }

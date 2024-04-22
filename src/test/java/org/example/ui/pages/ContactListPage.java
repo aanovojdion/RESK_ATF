@@ -4,6 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import static org.example.utils.BrowserActions.assertVisibilityOf;
+
 
 public class ContactListPage extends BasePage {
 
@@ -15,7 +17,6 @@ public class ContactListPage extends BasePage {
     }
 
     public WebElement getPageTitle() {
-        return pageTitle;
+        return assertVisibilityOf(pageTitle);
     }
-
 }

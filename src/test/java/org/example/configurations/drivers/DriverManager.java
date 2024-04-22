@@ -1,7 +1,6 @@
 package org.example.configurations.drivers;
 
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -12,9 +11,8 @@ import static org.example.configurations.PropertyLoader.getProperty;
 
 public class DriverManager {
 
-    private static String browserOptions = getProperty("browser.options.headless");
+    private static final String browserOptions = getProperty("browser.options.headless");
     private static WebDriver driver;
-    private static final Logger logger = LogManager.getLogger(DriverManager.class);
 
     private DriverManager() {
         driver = getManager();
@@ -26,8 +24,8 @@ public class DriverManager {
             case "chrome" -> getChromeDriver();
             case "firefox" -> getFirefoxDriver();
             default -> {
-                logger.info("Unexpected browser type: " + browser);
-                logger.info("Initializing Chrome browser as default");
+                LogManager.getLogger().warn("Unexpected browser type: " + browser);
+                LogManager.getLogger().info("Initializing Chrome browser as default");
                 yield getChromeDriver();
             }
         };
@@ -35,13 +33,13 @@ public class DriverManager {
 
     private static WebDriver getChromeDriver() {
         driver = new ChromeDriver(getChromeOptions());
-        logger.info("WebDriver instance created for Chrome browser");
+        LogManager.getLogger().info("WebDriver instance created for Chrome browser");
         return driver;
     }
 
     private static ChromeOptions getChromeOptions() {
         if (Boolean.parseBoolean(getProperty("browser.options.headless"))) {
-            logger.info("Chrome will be set to run in headless mode");
+            LogManager.getLogger().info("Chrome will be set to run in headless mode");
             return new ChromeOptions().addArguments("headless");
         }
         return new ChromeOptions();
@@ -49,7 +47,7 @@ public class DriverManager {
 
     private static WebDriver getFirefoxDriver() {
         driver = new FirefoxDriver(getFireFoxOptions());
-        logger.info("WebDriver instance created for FireFox browser");
+        LogManager.getLogger().info("WebDriver instance created for FireFox browser");
         return driver;
     }
 
@@ -72,7 +70,7 @@ public class DriverManager {
         if (driver != null) {
             driver.quit();
             driver = null;
-            logger.info("WebDriver has been quit and reset.");
+            LogManager.getLogger().info("WebDriver has been quit and reset.");
         }
     }
 }
