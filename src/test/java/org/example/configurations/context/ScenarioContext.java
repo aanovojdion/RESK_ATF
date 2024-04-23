@@ -1,24 +1,27 @@
 package org.example.configurations.context;
 
+import org.apache.logging.log4j.LogManager;
+
 import java.util.HashMap;
 import java.util.Map;
 
 
 public class ScenarioContext {
-    private final Map<String, Object> scenarioContext;
+    private static Map<ObjectKeys, Object> scenarioContext;
     private static ScenarioContext instance;
+
 
     private ScenarioContext() {
         instance = this;
         scenarioContext = new HashMap<>();
     }
 
-    public void setContext(ContextKeys key, Object value) {
-        scenarioContext.put(key.toString(), value);
+    public void setContext(ObjectKeys key, Object value) {
+        scenarioContext.put(key, value);
     }
 
-    public <T> T getContext(ContextKeys key, Class<T> type) {
-        return type.cast(scenarioContext.get(key.toString()));
+    public <T> T getContext(ObjectKeys key, Class<T> type) {
+        return type.cast(scenarioContext.get(key));
     }
 
     public static ScenarioContext getInstance() {
@@ -28,9 +31,15 @@ public class ScenarioContext {
         return instance;
     }
 
-    public enum ContextKeys {
-        DRIVER,
+    public static void tearDown() {
+        scenarioContext.clear();
+        LogManager.getLogger().info("ScenarioContext has been cleared, size = {}", scenarioContext.size());
+    }
+
+    public enum ObjectKeys {
         RESPONSE,
-        USERDATA
+        USERDATA,
+        EMAIL,
+        PASSWORD
     }
 }

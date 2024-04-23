@@ -1,4 +1,4 @@
-package org.example;
+package org.example.runner;
 
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
@@ -8,8 +8,8 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = {"org.example"},
-        tags = "@UI"
+        plugin = {"pretty", "html:reports/cucumber-report.html"}
 )
 
-public class Runner {
+public class TestRunner {
 }

@@ -1,4 +1,4 @@
-package org.example.configurations;
+package org.example.configurations.api_configs;
 
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -6,6 +6,7 @@ import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import org.example.configurations.PropertyLoader;
 
 public class Specifications {
     private final static String URL = PropertyLoader.getProperty("browser.homepage_url");
