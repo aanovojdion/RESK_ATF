@@ -5,9 +5,8 @@ Feature: Login functionality
     Given user is on the Home page
 
   Scenario: An already registered user has successfully logged in
-    When user logins with valid 'any.key@mail.com' and 'any.key@mail.com'
+    When user logins with valid 'any.key@mail.com' and '123NewPassword'
     Then user has successfully logged in
-
 
   @Negative
   Scenario Outline: An user cannot login using invalid credentials

@@ -60,6 +60,7 @@ public class DriverManager {
             try {
                 new DriverManager();
             } catch (Exception ex) {
+                LogManager.getLogger().error("WebDriver has not been initialized.");
                 throw new IllegalStateException("WebDriver has not been initialized.");
             }
         }

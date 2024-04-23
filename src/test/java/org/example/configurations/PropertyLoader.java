@@ -20,7 +20,7 @@ public class PropertyLoader {
             try (InputStream ip = new FileInputStream("src/test/resources/application.properties")) {
                 properties.load(ip);
             } catch (IOException e) {
-                LogManager.getLogger().info("Failed to load properties file: " + e.getMessage());
+                LogManager.getLogger().error("Failed to load properties file: " + e.getMessage());
                 throw new RuntimeException("Failed to load properties file", e);
             }
         }
@@ -32,7 +32,7 @@ public class PropertyLoader {
         }
         String value = properties.getProperty(key);
         if (value == null) {
-            LogManager.getLogger().info("Property not found for key: " + key);
+            LogManager.getLogger().error("Property not found for key: " + key);
             throw new RuntimeException("Property not found for key: " + key);
         }
         return properties.getProperty(key);

@@ -44,6 +44,7 @@ public class Hooks {
         scenarioContext = ScenarioContext.getInstance();
         WebDriver webDriver = DriverManager.getDriver();
         webDriver.manage().window().maximize();
+        LogManager.getLogger().debug("Browser window maximized");
         webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         ScenarioContext.tearDown();
         LogManager.getLogger().info("---------------------Scenario '{}' started.---------------------", scenario.getName());

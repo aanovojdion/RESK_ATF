@@ -20,8 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class HomePageSteps {
 
     private final HomePage homePage = new HomePage(DriverManager.getDriver());
-    private final String validEmail = PropertyLoader.getProperty("credentials.email");
-    private final String validPassword = PropertyLoader.getProperty("credentials.password");
 
     @Given("user is on the Home page")
     public void userIsOnTheHomePage() {
@@ -61,22 +59,5 @@ public class HomePageSteps {
     @And("user navigates to the Add User page")
     public void userNavigatesToTheAddUserPage() {
         homePage.signInBtn();
-    }
-
-    @Given("already logged-in user is on the Contact List page")
-    public void userLoginsWithValidData() {
-        userIsOnTheHomePage();
-        homePage.fillLoginForm(validEmail, validPassword);
-        LogManager.getLogger().info("User logins with valid data.");
-    }
-
-    @And("the Contact List is empty")
-    public void contactListIsEmpty() {
-
-    }
-
-    @And("newly added user is displayed in the table")
-    public void newlyAddedUserIsDisplayedInTheTable() {
-        LogManager.getLogger().info("New Contact is successfully added.");
     }
 }

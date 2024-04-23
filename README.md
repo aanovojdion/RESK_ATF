@@ -6,7 +6,7 @@ This framework provides convenient tools for automated testing in Java using Mav
 RestAssured, and other
 libraries.
 
-### System under test: https://thinking-tester-contact-list.herokuapp.com
+System under test: https://thinking-tester-contact-list.herokuapp.com
 
 ## Features
 
@@ -41,7 +41,7 @@ Use an IDE or command line to run the tests.
 ## Logging and Reports
 
 - After execution, you can find the log file for each scenario in the [logs] directory
-- After execution, you can find the [cucumberreport.html] file in the [reports] directory
+- After execution, you can find the [cucumber-report.html] file in the [reports] directory
 
 ## Additional Settings
 

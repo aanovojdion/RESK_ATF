@@ -22,7 +22,7 @@ public class ScreenShotUtil {
             FileUtils.writeByteArrayToFile(new File("target/screenshots/"
                     + new SimpleDateFormat("dd-MMM-yyyy HH.mm.ss.ssssss' " + scenario.getName() + ".png'").format(new Date())), scrFile);
         } catch (IOException e) {
-            LogManager.getLogger().info("Failed to save screenshot");
+            LogManager.getLogger().error("Failed to save screenshot");
         }
     }
 }

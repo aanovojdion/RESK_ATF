@@ -15,8 +15,7 @@ Feature: User Registration UI
       | firstName | lastName | email              | password    |
       | John      | Lee      | johnlee@gmail.com  | test123     |
       | Ann       | Stone    | ann.stone@mail.com | Password123 |
-
-
+    
   @NegativeFlow
   Scenario Outline: Failed Registration of a New User using invalid data
     When user submits registration form with data
