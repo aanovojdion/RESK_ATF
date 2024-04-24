@@ -15,7 +15,6 @@
         <junit-jupiter-api.version>5.10.2</junit-jupiter-api.version>
         <cucumber-java.version>7.15.0</cucumber-java.version>
         <log4j-core.version>2.23.1</log4j-core.version>
-        <log4j-api.version>2.23.1</log4j-api.version>
         <slf4j-api.version>1.6.4</slf4j-api.version>
         <slf4j-simple.version>1.7.25</slf4j-simple.version>
         <selenium-java.version>4.19.1</selenium-java.version>
@@ -49,7 +48,7 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
-            <version>${log4j-api.version}</version>
+            <version>${log4j-core.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

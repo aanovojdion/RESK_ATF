@@ -9,8 +9,8 @@ import org.openqa.selenium.TakesScreenshot;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ScreenShotUtil {
 
@@ -18,9 +18,13 @@ public class ScreenShotUtil {
         TakesScreenshot screenShot = ((TakesScreenshot) DriverManager.getDriver());
         byte[] scrFile = screenShot.getScreenshotAs(OutputType.BYTES);
         scenario.attach(scrFile, "image/png", "SCREENSHOT");
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy HH.mm.ss.SSSSSS ");
+        String formattedDateTime = now.format(formatter);
+
         try {
             FileUtils.writeByteArrayToFile(new File("target/screenshots/"
-                    + new SimpleDateFormat("dd-MMM-yyyy HH.mm.ss.ssssss' " + scenario.getName() + ".png'").format(new Date())), scrFile);
+                    + formattedDateTime + scenario.getName() + ".png"), scrFile);
         } catch (IOException e) {
             LogManager.getLogger().error("Failed to save screenshot");
         }

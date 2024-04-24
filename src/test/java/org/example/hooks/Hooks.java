@@ -26,8 +26,8 @@ public class Hooks {
 
     private static ScenarioContext scenarioContext;
 
-    @Before("@API")
-    public static void beforeAPI(Scenario scenario) {
+    @Before(order = 1)
+    public static void before(Scenario scenario) {
         scenarioContext = ScenarioContext.getInstance();
         String scenarioName = scenario.getName().trim().replaceAll(" ", "_");
         ThreadContext.put("scenarioName", scenarioName);
@@ -38,16 +38,10 @@ public class Hooks {
 
     @Before("@UI")
     public static void beforeUI(Scenario scenario) {
-        String scenarioName = scenario.getName().trim().replaceAll(" ", "_");
-        ThreadContext.put("scenarioName", scenarioName);
-        Configurator.reconfigure();
-        scenarioContext = ScenarioContext.getInstance();
         WebDriver webDriver = DriverManager.getDriver();
         webDriver.manage().window().maximize();
         LogManager.getLogger().debug("Browser window maximized");
         webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        ScenarioContext.tearDown();
-        LogManager.getLogger().info("---------------------Scenario '{}' started.---------------------", scenario.getName());
     }
 
     @AfterStep("@UI")
@@ -70,7 +64,7 @@ public class Hooks {
     }
 
     @After("@SuccessfullyUserRegistration")
-    public void successfullyUserRegistration(Scenario scenario) {
+    public void successfullyUserRegistration() {
         LoginUserActions loginUserActions = new LoginUserActions();
         DeleteUserActions deleteUserActions = new DeleteUserActions();
         Map<String, String> credentials = Map.of("email", scenarioContext.getContext(EMAIL, String.class), "password", scenarioContext.getContext(PASSWORD, String.class));

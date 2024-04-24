@@ -40,7 +40,7 @@ public class DriverManager {
     private static ChromeOptions getChromeOptions() {
         if (Boolean.parseBoolean(getProperty("browser.options.headless"))) {
             LogManager.getLogger().info("Chrome will be set to run in headless mode");
-            return new ChromeOptions().addArguments("headless");
+            return new ChromeOptions().addArguments("-headless");
         }
         return new ChromeOptions();
     }
@@ -52,7 +52,11 @@ public class DriverManager {
     }
 
     private static FirefoxOptions getFireFoxOptions() {
-        return new FirefoxOptions().addArguments(browserOptions);
+        if (Boolean.parseBoolean(getProperty("browser.options.headless"))) {
+            LogManager.getLogger().info("Firefox will be set to run in headless mode");
+            return new FirefoxOptions().addArguments("-headless");
+        }
+        return new FirefoxOptions();
     }
 
     public static WebDriver getDriver() {
